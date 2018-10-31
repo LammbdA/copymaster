@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "options.h"
+#include "prepinac.h"
 
 
 void FatalError(char c, const char* msg, int exit_status);
