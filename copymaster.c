@@ -46,10 +46,60 @@ int main(int argc, char* argv[])
     //-------------------------------------------------------------------
     // Vypis adresara
     //-------------------------------------------------------------------
+	int rt;
     
-    if (cpm_options.directory) {
-        // TODO Implementovat vypis adresara
-    }
+    	if (cpm_options.directory) {
+        	// TODO Implementovat vypis adresara
+    	}
+    	else if (cpm_options.append) { 
+			rt = append(argv[argc-2], argv[argc-1]);
+			if (rt != 0) return rt;
+		} 
+		else if (cpm_options.overwrite) {
+			rt = overwrite(argv[argc-2], argv[argc-1]);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.delete) {
+			rt = delete(argv[argc-2], argv[argc-1]);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.truncate) {
+			rt = mytruncate(argv[argc-2], argv[argc-1], trunc_size);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.link) {
+			rt = linkk(argv[argc-2], argv[argc-1]);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.slow) {
+			rt = slow(argv[argc-2], argv[argc-1]);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.fast) {
+			rt = fast(argv[argc-2], argv[argc-1]);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.lseek) {
+			rt = mylseek(argv[argc-2], argv[argc-1], argument);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.inode) {
+			rt = inode(argv[argc-2], argv[argc-1], number);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.mchmod) {
+			rt = mchmod(argv[argc-2], argv[argc-1], argument);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.create) {
+			rt = create(argv[argc-2], argv[argc-1], argument);
+			if (rt != 0) return rt;
+		}
+		else if (cpm_options.umask) {
+			rt = mumask(argv[argc-2], argv[argc-1], argument);
+			if (rt != 0) return rt;
+		}
+	}
         
     //-------------------------------------------------------------------
     // Osetrenie prepinacov po kopirovani
