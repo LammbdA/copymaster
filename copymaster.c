@@ -13,7 +13,14 @@ void PrintCopymasterOptions(struct CopymasterOptions* cpm_options);
 
 int main(int argc, char* argv[])
 {
-    struct CopymasterOptions cpm_options = ParseCopymasterOptions(argc, argv);
+    
+	extern int optind;
+	int rt;
+	int trunc_size; //for truncating
+	char *argument; //for lseek and chmod
+	long number; //for inode
+	
+	struct CopymasterOptions cpm_options = ParseCopymasterOptions(argc, argv);
 
     //-------------------------------------------------------------------
     // Kontrola hodnot prepinacov
@@ -31,7 +38,18 @@ int main(int argc, char* argv[])
         fprintf(stderr, "CHYBA PREPINACOV\n"); 
         exit(EXIT_FAILURE);
     }
-    
+
+	if (argc <= 2) {
+		fprintf(stderr, "CHYBA PREPINACOV\n");
+		return 20;
+	}
+	
+	
+	if (argc == 3) {
+		rt = nothing(argv[argc-2], argv[argc-1]);
+		if (rt != 0) return rt;
+	}
+	    
     // TODO Nezabudnut dalsie kontroly kombinacii prepinacov ...
     
     //-------------------------------------------------------------------
@@ -39,15 +57,19 @@ int main(int argc, char* argv[])
     //-------------------------------------------------------------------
     
     // TODO Implementovat kopirovanie suborov
+
+    if (optind + 2 != argc) {
+        fprintf(stderr, usage_error_msg_format, argv[0], "infile or outfile is missing");
+        exit(EXIT_FAILURE);
+    }
     
-    // cpm_options.infile
-    // cpm_options.outfile
+    cpm_options.infile = argv[optind];
+    cpm_options.outfile = argv[optind + 1];
+
     
     //-------------------------------------------------------------------
     // Vypis adresara
-    //-------------------------------------------------------------------
-	int rt;
-    
+    //-------------------------------------------------------------------    
     	if (cpm_options.directory) {
         	// TODO Implementovat vypis adresara
     	}
@@ -59,7 +81,7 @@ int main(int argc, char* argv[])
 			rt = overwrite(argv[argc-2], argv[argc-1]);
 			if (rt != 0) return rt;
 		}
-		else if (cpm_options.delete) {
+		else if (cpm_options.delete_opt) {
 			rt = delete(argv[argc-2], argv[argc-1]);
 			if (rt != 0) return rt;
 		}
@@ -87,7 +109,7 @@ int main(int argc, char* argv[])
 			rt = inode(argv[argc-2], argv[argc-1], number);
 			if (rt != 0) return rt;
 		}
-		else if (cpm_options.mchmod) {
+		else if (cpm_options.chmod) {
 			rt = mchmod(argv[argc-2], argv[argc-1], argument);
 			if (rt != 0) return rt;
 		}
@@ -99,7 +121,7 @@ int main(int argc, char* argv[])
 			rt = mumask(argv[argc-2], argv[argc-1], argument);
 			if (rt != 0) return rt;
 		}
-	}
+	
         
     //-------------------------------------------------------------------
     // Osetrenie prepinacov po kopirovani
