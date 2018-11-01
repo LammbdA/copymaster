@@ -14,6 +14,7 @@ void PrintCopymasterOptions(struct CopymasterOptions* cpm_options);
 int main(int argc, char* argv[])
 {
     
+	const char* usage_error_msg_format = "Usage: %s [OPTION]... SOURCE DEST\n(%s)\n";
 	extern int optind;
 	int rt;
 	int trunc_size; //for truncating
